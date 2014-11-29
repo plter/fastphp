@@ -20,4 +20,4 @@ define('DEFAULT_ACTION_NAME','index');
 require_once __DIR__.'/Lib/FastPhp/Loader.php';
 
 use \Lib\FastPhp\Loader;
-Loader::getInstance()->getInstance()->run();
+Loader::getInstance()->run();

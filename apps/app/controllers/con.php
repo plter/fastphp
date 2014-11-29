@@ -16,4 +16,4 @@ class con extends AbstractController{
     public function index(){
         return array('title'=>'FastPhp');
     }
-} 
+}
