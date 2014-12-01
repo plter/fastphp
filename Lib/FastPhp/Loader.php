@@ -12,6 +12,7 @@ require_once __DIR__.'/Context.php';
 require_once __DIR__.'/Pages.php';
 require_once __DIR__.'/AbstractController.php';
 require_once __DIR__.'/HtmlBlock.php';
+require_once __DIR__ . '/Dbc/Db.php';
 
 class Loader {
 
@@ -22,13 +23,18 @@ class Loader {
 
 
     public function run(){
-        //main adapter
-        $scriptName = $_SERVER['SCRIPT_NAME'];
-        $scriptDir = dirname($scriptName);
-        $requestUri = $_SERVER['REQUEST_URI'];
+        $adapterPath = $this->readAdapterPath();
+        $context = $this->parseAdapter($adapterPath);
+        $this->initDb($context);
+        $this->loadControllerAndRunAction($context);
+    }
 
+    /**
+     * @return string
+     */
+    private function readAdapterPath(){
         //Read adapter path >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        $adapterPath = substr($requestUri,strlen($scriptDir));
+        $adapterPath = substr(REQUEST_URI,strlen(FASTPHP_HTTP_ROOT));
 
         $indexFile = '/index.php';
         $indexFileStrlen = strlen($indexFile);
@@ -36,18 +42,21 @@ class Loader {
             substr($adapterPath,0,$indexFileStrlen)==$indexFile){
             $adapterPath = substr($adapterPath,$indexFileStrlen);
         }
-        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        return $adapterPath;
+    }
 
-        //Parse adapter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    private function parseAdapter($adapterPath){
         $context = new Context($adapterPath);
+        return $context;
+    }
 
+    private function loadControllerAndRunAction(Context $context){
         $appName = $context->getAppName();
         $controllerName = $context->getControllerName();
         $actionName = $context->getActionName();
-        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-        //Load the controller and run action >>>>>>>>>>>>>>>>>>>>
-        $theConFilePath = APPS_ROOT."/$appName/controllers/$controllerName.php";
+        $theConFilePath = APPS_ROOT."$appName/controllers/$controllerName.php";
+
         if(file_exists($theConFilePath)){
             require_once $theConFilePath;
 
@@ -90,7 +99,16 @@ class Loader {
         }else{
             Pages::controllerNotFound("/$appName/$controllerName");
         }
-        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    }
+
+    private function initDb(Context $context){
+        $appName = $context->getAppName();
+        $modelsRoot = APPS_ROOT."$appName/models/";
+
+        $dbcFile = $modelsRoot.'dbc.php';
+        if(file_exists($dbcFile)){
+            require_once $dbcFile;
+        }
     }
 
 

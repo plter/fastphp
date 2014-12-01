@@ -25,11 +25,13 @@ class RootView extends HtmlBlock{
     public function __toString(){
         $theContent = $this->getContent();
         $theTitle = $this->getTitle();
+        $jqueryFile = $this->getContext()->getAppUrlRoot().'/js/jquery.min.js';
         return "<!DOCTYPE html>
 <html>
 <head>
 <meta charset='utf-8'>
 <title>$theTitle</title>
+<script src='$jqueryFile'></script>
 </head>
 <body>
 $theContent

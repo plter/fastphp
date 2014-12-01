@@ -17,20 +17,20 @@ class Context{
         $this->adapterPath = $adapterPath;
 
         $this->adapterPathSplitArr = explode('/',$adapterPath);
+        if(isset($this->adapterPathSplitArr[0])&&
+            !empty($this->adapterPathSplitArr[0])){
+            $this->appName = $this->adapterPathSplitArr[0];
+        }
         if(isset($this->adapterPathSplitArr[1])&&
             !empty($this->adapterPathSplitArr[1])){
-            $this->appName = $this->adapterPathSplitArr[1];
+            $this->controllerName = $this->adapterPathSplitArr[1];
         }
         if(isset($this->adapterPathSplitArr[2])&&
             !empty($this->adapterPathSplitArr[2])){
-            $this->controllerName = $this->adapterPathSplitArr[2];
-        }
-        if(isset($this->adapterPathSplitArr[3])&&
-            !empty($this->adapterPathSplitArr[3])){
-            $this->actionName = $this->adapterPathSplitArr[3];
+            $this->actionName = $this->adapterPathSplitArr[2];
         }
 
-        $this->appUrlRoot = APPS_HTTP_ROOT.'/'.$this->appName;
+        $this->appUrlRoot = APPS_HTTP_ROOT.$this->appName;
     }
 
     public function getPathArr(){
