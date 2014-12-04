@@ -12,7 +12,7 @@ define('REQUEST_URI',$_SERVER['REQUEST_URI']);
 define('FASTPHP_ROOT',__DIR__);
 define('FASTPHP_HTTP_ROOT',dirname(SCRIPT_NAME));
 define('APPS_ROOT',FASTPHP_ROOT.'/apps');
-define('APPS_HTTP_ROOT',FASTPHP_HTTP_ROOT.'/apps');
+define('APPS_HTTP_ROOT',FASTPHP_HTTP_ROOT.(FASTPHP_HTTP_ROOT=='/'?'apps':'/apps'));
 define('DEFAULT_APP_NAME','app');
 define('DEFAULT_CONTROLLER_NAME','con');
 define('DEFAULT_ACTION_NAME','index');

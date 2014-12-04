@@ -30,7 +30,7 @@ class Context{
             $this->actionName = $this->adapterPathSplitArr[3];
         }
 
-        $this->appUrlRoot = APPS_HTTP_ROOT.'/'.$this->appName;
+        $this->appUrlRoot = APPS_HTTP_ROOT."/$this->appName";
     }
 
     public function getPathArr(){
