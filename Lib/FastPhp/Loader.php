@@ -38,10 +38,16 @@ class Loader {
 
         $indexFile = '/index.php';
         $indexFileStrlen = strlen($indexFile);
-        if(strlen($adapterPath)>$indexFileStrlen &&
+
+        if(strlen($adapterPath)>=$indexFileStrlen &&
             substr($adapterPath,0,$indexFileStrlen)==$indexFile){
+
             $adapterPath = substr($adapterPath,$indexFileStrlen);
         }
+        if($adapterPath[0]!='/'){
+            $adapterPath = '/'.$adapterPath;
+        }
+
         return $adapterPath;
     }
 
@@ -55,7 +61,7 @@ class Loader {
         $controllerName = $context->getControllerName();
         $actionName = $context->getActionName();
 
-        $theConFilePath = APPS_ROOT."$appName/controllers/$controllerName.php";
+        $theConFilePath = APPS_ROOT."/$appName/controllers/$controllerName.php";
 
         if(file_exists($theConFilePath)){
             require_once $theConFilePath;
@@ -103,9 +109,9 @@ class Loader {
 
     private function initDb(Context $context){
         $appName = $context->getAppName();
-        $modelsRoot = APPS_ROOT."$appName/models/";
+        $modelsRoot = APPS_ROOT."/$appName/models";
 
-        $dbcFile = $modelsRoot.'dbc.php';
+        $dbcFile = $modelsRoot.'/dbc.php';
         if(file_exists($dbcFile)){
             require_once $dbcFile;
         }

@@ -16,12 +16,17 @@ class Db{
      * @param $dsn
      * @param null $uname
      * @param null $pw
-     * @param array $options
-     * @return Db
+     * @return boolean
      */
-    public function connect($dsn,$uname=null,$pw=null,array $options=null){
-        $this->pdo = new \PDO($dsn,$uname,$pw,$options);
-        return $this;
+    public function connect($dsn,$uname=null,$pw=null){
+        try {
+            $this->pdo = new \PDO($dsn, $uname, $pw, array(
+                \PDO::ATTR_PERSISTENT => true
+            ));
+            return true;
+        }catch (\PDOException $e){
+            return false;
+        }
     }
 
     /**
@@ -66,4 +71,4 @@ class Db{
     }
 
     private static $__dbconn = null;
-} 
+}

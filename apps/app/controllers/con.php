@@ -16,4 +16,8 @@ class con extends AbstractController{
     public function index(){
         return array('title'=>'FastPhp');
     }
+
+    public function add_user(){
+        return array('title'=>'添加用户');
+    }
 }
