@@ -35,15 +35,19 @@ class Loader {
     private function readAdapterPath(){
         //Read adapter path >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         $adapterPath = substr(REQUEST_URI,strlen(FASTPHP_HTTP_ROOT));
+        if($adapterPath[0]!='/'){
+            $adapterPath = '/'.$adapterPath;
+        }
 
         $indexFile = '/index.php';
         $indexFileStrlen = strlen($indexFile);
 
         if(strlen($adapterPath)>=$indexFileStrlen &&
-            substr($adapterPath,0,$indexFileStrlen)==$indexFile){
+            substr($adapterPath,0,$indexFileStrlen)==$indexFile) {
 
-            $adapterPath = substr($adapterPath,$indexFileStrlen);
+            $adapterPath = substr($adapterPath, $indexFileStrlen);
         }
+
         if($adapterPath[0]!='/'){
             $adapterPath = '/'.$adapterPath;
         }
